@@ -7,12 +7,14 @@ d = DiscreteUniform(1, 2)
 
 # Implements a code similar to the code used in Wichmann2014
 # code: Integer vector corresponding to the colors indices
-# cx, cy: center coordinates of the circle
 # r1: radius of the inner circle
 # r2: radius of the outer circle
+# r3: radius of the border circle
+# [cx], [cy]: center coordinates of the circle
 # [colors]: Vector of colors to choose from, defaults to black and white
 # [lw]: thickness of the border between inner circle and code segments
-function berlin_code(code, cx, cy, r1, r2; 
+function berlin_code(code, r1, r2, r3 = 1.0;
+                     cx = .5, cy = .5, 
                      colors = ["white", "black"], 
                      lw = 4pt)
     # Number of code segments necessary
@@ -58,8 +60,14 @@ function berlin_code(code, cx, cy, r1, r2;
                 , fill("white")
                 , linewidth(lw))
 
+    # Border
+    border = compose(
+                context()
+                , circle(cx, cy, r3)
+                , stroke("white")
+                , fill("white"))
     # join together all segments end the inner circle
-    compose(context(), lower, upper, contexts)
+    compose(context(), lower, upper, contexts, border)
 end
 
 # Calculates a point on the circle given by (cx, cy, r),
