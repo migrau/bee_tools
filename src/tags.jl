@@ -1,9 +1,8 @@
-using Docile
-
 module Tags
 
 export create_tag
 
+using Docile
 using Compose
 using Color
 

@@ -2,7 +2,7 @@ module Hamming
 # Implements a general method to create hamming codes
 # Following the lecture notes from MIT 6.02 S2012 and F2011
 
-export hamming, hamming_code, encode, decode
+export hamming, hamming_code, encode, decode, gf2_int, int_gf2
 
 using Docile
 using IntModN
@@ -119,6 +119,41 @@ function decode(H, syndroms, msg)
     end
     
     msg
+end
+
+@doc """
+Turns an integer into a vector of GF2
+
+Inspired by bin from julia base
+""" ->
+function int_gf2(x; pad = 1)
+    @assert x >= 0
+
+    i = max(pad, sizeof(x) << 3-leading_zeros(x))
+    code = Array(Field, i)
+    
+    while i > 0
+        code[i] = 0 + (x&0x1)
+        x >>= 1
+        i -= 1
+    end
+    code
+end
+
+@doc """
+Turns a vector of GF2 (big endian) into an integer
+""" ->
+function gf2_int(code :: Vector{Field})
+    result = 0
+    p2 = length(code) - 1
+
+    for i in 1:length(code)
+        result += convert(Int64, code[i]) * 2^p2
+
+        p2 -= 1
+    end
+
+    result
 end
 
 # TODO: rewrite with @generate function
