@@ -16,3 +16,4 @@ endif()
 include_directories("../../deps/blackmagicSDK/include/")
 
 add_executable(Capture capture.cpp)
+target_link_libraries(Capture pthread dl)
