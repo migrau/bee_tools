@@ -7,6 +7,8 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "bmd/callback.hpp"
+
 int main(int argc, char *argv[]) {
   IDeckLinkIterator *deckLinkIterator = CreateDeckLinkIteratorInstance();
 
@@ -66,6 +68,7 @@ int main(int argc, char *argv[]) {
   BMDPixelFormat pixelFormat = bmdFormat10BitYUV;
   BMDVideoInputFlags flags;
 
+  // iterate over available modes to get the appropriate flags
   while (resultCode == S_OK && mode != NULL) {
     mode->GetName((const char**) &name);
     std::cout << "Mode: " << name << " ";
@@ -125,10 +128,22 @@ int main(int argc, char *argv[]) {
     std::cerr << "Could not enable video input. Reason: Out of memory";
     return -1;
   }
-    // SetCallback
-    // StartStreams
-    // FlushStreams
-    // StopStreams
+
+  // Set callback
+  BMDCallback callback = BMDCallback();
+  if (input->SetCallback(&callback) == E_FAIL) {
+    std::cerr << "Failed to set callback";
+    return -1;
+  }
+
+  // Start streams
+  // TODO: check errorCodes
+  resultCode = input->StartStreams();
+
+  // Stop streams
+  if (input->StopStreams() == E_ACCESSDENIED) {
+    std::cerr << "Streams already stopped\n";
+  }
 
   input->DisableVideoInput();
   input->Release();
