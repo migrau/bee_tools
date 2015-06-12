@@ -17,9 +17,9 @@ endif()
 find_package(OpenCV REQUIRED)
 
 # Include Blackmagic SDK
-set(BMDSDK_INCLUDES "../../deps/blackmagicSDK/include/")
+set(BMDSDK_INCLUDE_DIRS "../../deps/blackmagicSDK/include/")
 set(BMDSDK_LIBS pthread dl)
 
-include_directories(${BMDSDK_INCLUDES})
+include_directories(${BMDSDK_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 add_executable(Capture capture.cpp bmd/callback.cpp)
-target_link_libraries(Capture ${NMDSDK_LIBS} ${OpenCV_LIBS})
+target_link_libraries(Capture ${BMDSDK_LIBS} ${OpenCV_LIBS})

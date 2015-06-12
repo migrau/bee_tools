@@ -145,6 +145,7 @@ int main(int argc, char *argv[]) {
     std::cerr << "Streams already stopped\n";
   }
 
+  //TODO: Proper Cleanup
   input->DisableVideoInput();
   input->Release();
   deckLink->Release();

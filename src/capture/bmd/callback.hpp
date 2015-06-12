@@ -19,3 +19,6 @@ class BMDCallback : public IDeckLinkInputCallback {
     ULONG AddRef() {}
     ULONG Release() {};
 };
+
+void convertYUV2Gray(uint32_t* in, uint16_t* out, long height, long width);
+
