@@ -13,7 +13,13 @@ else()
   message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-include_directories("../../deps/blackmagicSDK/include/")
+# Find OpenCV
+find_package(OpenCV REQUIRED)
 
+# Include Blackmagic SDK
+set(BMDSDK_INCLUDES "../../deps/blackmagicSDK/include/")
+set(BMDSDK_LIBS pthread dl)
+
+include_directories(${BMDSDK_INCLUDES})
 add_executable(Capture capture.cpp bmd/callback.cpp)
-target_link_libraries(Capture pthread dl)
+target_link_libraries(Capture ${NMDSDK_LIBS} ${OpenCV_LIBS})
